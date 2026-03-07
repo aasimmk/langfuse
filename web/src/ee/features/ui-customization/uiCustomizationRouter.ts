@@ -29,6 +29,10 @@ export const uiCustomizationRouter = createTRPCRouter({
         env.LANGFUSE_UI_VISIBLE_PRODUCT_MODULES,
         env.LANGFUSE_UI_HIDDEN_PRODUCT_MODULES,
       ),
+      disableBookCallButton:
+        env.LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON === "true",
+      disableSupportButton:
+        env.LANGFUSE_UI_DISABLE_SUPPORT_BUTTON === "true",
     };
   }),
 });

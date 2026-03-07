@@ -273,6 +273,8 @@ export const env = createEnv({
     LANGFUSE_UI_DEFAULT_BASE_URL_OPENAI: z.string().url().optional(),
     LANGFUSE_UI_DEFAULT_BASE_URL_ANTHROPIC: z.string().url().optional(),
     LANGFUSE_UI_DEFAULT_BASE_URL_AZURE: z.string().url().optional(),
+    LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON: z.enum(["true", "false"]).optional(),
+    LANGFUSE_UI_DISABLE_SUPPORT_BUTTON: z.enum(["true", "false"]).optional(),
 
     // EE License
     LANGFUSE_EE_LICENSE_KEY: z.string().optional(),
@@ -706,6 +708,10 @@ export const env = createEnv({
       process.env.LANGFUSE_UI_VISIBLE_PRODUCT_MODULES,
     LANGFUSE_UI_HIDDEN_PRODUCT_MODULES:
       process.env.LANGFUSE_UI_HIDDEN_PRODUCT_MODULES,
+    LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON:
+      process.env.LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON,
+    LANGFUSE_UI_DISABLE_SUPPORT_BUTTON:
+      process.env.LANGFUSE_UI_DISABLE_SUPPORT_BUTTON,
     // Playground
     NEXT_PUBLIC_LANGFUSE_PLAYGROUND_STREAMING_ENABLED_DEFAULT:
       process.env.NEXT_PUBLIC_LANGFUSE_PLAYGROUND_STREAMING_ENABLED_DEFAULT,

@@ -3,16 +3,22 @@ import { SidebarMenuButton } from "@/src/components/ui/sidebar";
 import useLocalStorage from "@/src/components/useLocalStorage";
 import Link from "next/link";
 import { usePostHogClientCapture } from "@/src/features/posthog-analytics/usePostHogClientCapture";
+import { useUiCustomization } from "@/src/ee/features/ui-customization/useUiCustomization";
 
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
 const FIRST_SEEN_KEY = "book-a-call-first-seen";
 
 export const BookACallButton = () => {
+  const uiCustomization = useUiCustomization();
   const capture = usePostHogClientCapture();
   const [firstSeen, setFirstSeen] = useLocalStorage<number | null>(
     FIRST_SEEN_KEY,
     null,
   );
+
+  if (uiCustomization?.disableBookCallButton) {
+    return null;
+  }
 
   // Set first seen timestamp if not already set
   if (firstSeen === null) {
