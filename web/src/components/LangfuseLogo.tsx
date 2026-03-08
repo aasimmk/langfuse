@@ -24,6 +24,7 @@ export const LangfuseIcon = ({
 
 const LangfuseLogotypeOrCustomized = ({ size }: { size: "sm" | "xl" }) => {
   const uiCustomization = useUiCustomization();
+  const companyName = uiCustomization?.companyName ?? "Langfuse";
 
   if (uiCustomization?.logoLightModeHref && uiCustomization?.logoDarkModeHref) {
     // logo is a url, maximum aspect ratio of 1:3 needs to be supported according to docs
@@ -32,7 +33,7 @@ const LangfuseLogotypeOrCustomized = ({ size }: { size: "sm" | "xl" }) => {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={uiCustomization.logoLightModeHref}
-          alt="Langfuse Logo"
+          alt={`${companyName} Logo`}
           className={cn(
             "group-data-[collapsible=icon]:hidden dark:hidden",
             size === "sm" ? "max-h-4 max-w-14" : "max-h-5 max-w-16",
@@ -41,31 +42,49 @@ const LangfuseLogotypeOrCustomized = ({ size }: { size: "sm" | "xl" }) => {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={uiCustomization.logoDarkModeHref}
-          alt="Langfuse Logo"
+          alt={`${companyName} Logo`}
           className={cn(
             "hidden group-data-[collapsible=icon]:hidden dark:block",
             size === "sm" ? "max-h-4 max-w-14" : "max-h-5 max-w-16",
           )}
         />
-        <PlusIcon
-          size={size === "sm" ? 8 : 12}
-          className="group-data-[collapsible=icon]:hidden"
+        <span
+          className={cn(
+            "font-mono font-semibold leading-none group-data-[collapsible=icon]:hidden",
+            size === "sm" ? "text-sm" : "text-xl",
+          )}
+        >
+          {companyName}
+        </span>
+        <LangfuseIcon
+          size={size === "sm" ? 16 : 20}
+          className="hidden group-data-[collapsible=icon]:block"
         />
-        <LangfuseIcon size={size === "sm" ? 16 : 20} />
       </div>
     );
   }
 
+  const showPlusIcon =
+    !uiCustomization?.logoLightModeHref &&
+    !uiCustomization?.logoDarkModeHref &&
+    !uiCustomization?.companyName?.trim();
+
   return (
-    <div className="flex items-center">
+    <div className="flex items-center gap-1">
       <LangfuseIcon size={size === "sm" ? 16 : 20} />
+      {showPlusIcon && (
+        <PlusIcon
+          size={size === "sm" ? 8 : 12}
+          className="group-data-[collapsible=icon]:hidden"
+        />
+      )}
       <span
         className={cn(
-          "ml-2 font-mono font-semibold leading-none group-data-[collapsible=icon]:hidden",
+          "font-mono font-semibold leading-none group-data-[collapsible=icon]:hidden",
           size === "sm" ? "text-sm" : "text-xl",
         )}
       >
-        Langfuse
+        {companyName}
       </span>
     </div>
   );

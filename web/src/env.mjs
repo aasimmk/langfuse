@@ -275,6 +275,10 @@ export const env = createEnv({
     LANGFUSE_UI_DEFAULT_BASE_URL_AZURE: z.string().url().optional(),
     LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON: z.enum(["true", "false"]).optional(),
     LANGFUSE_UI_DISABLE_SUPPORT_BUTTON: z.enum(["true", "false"]).optional(),
+    LANGFUSE_UI_FAVICON_HREF: z.string().url().optional(),
+    LANGFUSE_UI_FAVICON_256_HREF: z.string().url().optional(),
+    LANGFUSE_UI_COMPANY_NAME: z.string().optional(),
+    LANGFUSE_UI_LOGO_FAVICON_ALLOWED_DOMAINS: z.string().optional(),
 
     // EE License
     LANGFUSE_EE_LICENSE_KEY: z.string().optional(),
@@ -712,6 +716,11 @@ export const env = createEnv({
       process.env.LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON,
     LANGFUSE_UI_DISABLE_SUPPORT_BUTTON:
       process.env.LANGFUSE_UI_DISABLE_SUPPORT_BUTTON,
+    LANGFUSE_UI_FAVICON_HREF: process.env.LANGFUSE_UI_FAVICON_HREF,
+    LANGFUSE_UI_FAVICON_256_HREF: process.env.LANGFUSE_UI_FAVICON_256_HREF,
+    LANGFUSE_UI_COMPANY_NAME: process.env.LANGFUSE_UI_COMPANY_NAME,
+    LANGFUSE_UI_LOGO_FAVICON_ALLOWED_DOMAINS:
+      process.env.LANGFUSE_UI_LOGO_FAVICON_ALLOWED_DOMAINS,
     // Playground
     NEXT_PUBLIC_LANGFUSE_PLAYGROUND_STREAMING_ENABLED_DEFAULT:
       process.env.NEXT_PUBLIC_LANGFUSE_PLAYGROUND_STREAMING_ENABLED_DEFAULT,

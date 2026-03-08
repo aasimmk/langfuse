@@ -7,11 +7,13 @@ import { useMemo } from "react";
 import { useLangfuseCloudRegion } from "@/src/features/organizations/hooks";
 import { env } from "@/src/env.mjs";
 import type { NavigationItem } from "@/src/components/layouts/utilities/routes";
+import { useUiCustomization } from "@/src/ee/features/ui-customization/useUiCustomization";
 
 /**
  * Generates metadata for the layout including:
  * - Dynamic page title based on active route
  * - Region-specific favicon (dev vs production)
+ * - Custom favicon from EE UI customization when available
  * - Apple touch icon path
  *
  * @param activePathName - Title of the currently active navigation item
@@ -23,24 +25,34 @@ export function useLayoutMetadata(
   _navigation: NavigationItem[],
 ) {
   const { region } = useLangfuseCloudRegion();
+  const uiCustomization = useUiCustomization();
 
   return useMemo(() => {
     const basePath = env.NEXT_PUBLIC_BASE_PATH ?? "";
+    const appName = uiCustomization?.companyName ?? "Langfuse";
 
     // Determine page title from active route
-    const title = activePathName ? `${activePathName} | Langfuse` : "Langfuse";
+    const title = activePathName ? `${activePathName} | ${appName}` : appName;
 
-    // Use dev favicon in DEV region for visual distinction
-    // Using SVG for modern browsers with PNG fallback specified in sizes
+    // Use custom favicon from EE UI customization when available
     const faviconPath =
-      region === "DEV" ? `${basePath}/icon-dev.svg` : `${basePath}/icon.svg`;
+      uiCustomization?.faviconHref ??
+      (region === "DEV" ? `${basePath}/icon-dev.svg` : `${basePath}/icon.svg`);
+
+    const favicon256Path =
+      uiCustomization?.favicon256Href ?? `${basePath}/icon256.png`;
 
     return {
       title,
       faviconPath,
-      // PNG icons with sizes for broader browser compatibility
-      favicon256Path: `${basePath}/icon256.png`,
+      favicon256Path,
       appleTouchIconPath: `${basePath}/apple-touch-icon.png`,
     };
-  }, [activePathName, region]);
+  }, [
+    activePathName,
+    region,
+    uiCustomization?.companyName,
+    uiCustomization?.faviconHref,
+    uiCustomization?.favicon256Href,
+  ]);
 }
