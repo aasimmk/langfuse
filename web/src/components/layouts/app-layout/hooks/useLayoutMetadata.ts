@@ -34,7 +34,7 @@ export function useLayoutMetadata(
     // Determine page title from active route
     const title = activePathName ? `${activePathName} | ${appName}` : appName;
 
-    // Use custom favicon from EE UI customization when available (supports SVG and PNG)
+    // Use custom favicon from EE UI customization when available (supports SVG, PNG, and ICO)
     const faviconUrl = uiCustomization?.faviconUrl;
     const defaultFaviconPath =
       region === "DEV" ? `${basePath}/icon-dev.svg` : `${basePath}/icon.svg`;
@@ -43,11 +43,14 @@ export function useLayoutMetadata(
     const faviconPath = faviconUrl ?? defaultFaviconPath;
     const favicon256Path = faviconUrl ?? defaultFavicon256Path;
 
-    // Detect MIME type from URL for custom favicon (supports SVG and PNG)
+    // Detect MIME type from URL for custom favicon (supports SVG, PNG, and ICO)
+    const pathWithoutQuery = faviconUrl?.toLowerCase().split("?")[0] ?? "";
     const faviconMimeType = faviconUrl
-      ? faviconUrl.toLowerCase().split("?")[0].endsWith(".svg")
+      ? pathWithoutQuery.endsWith(".svg")
         ? ("image/svg+xml" as const)
-        : ("image/png" as const)
+        : pathWithoutQuery.endsWith(".ico")
+          ? ("image/x-icon" as const)
+          : ("image/png" as const)
       : null;
 
     return {

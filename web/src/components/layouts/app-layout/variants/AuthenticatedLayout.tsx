@@ -68,7 +68,7 @@ type AuthenticatedLayoutProps = PropsWithChildren<{
     faviconPath: string;
     favicon256Path: string;
     faviconUrl: string | null;
-    faviconMimeType: "image/svg+xml" | "image/png" | null;
+    faviconMimeType: "image/svg+xml" | "image/png" | "image/x-icon" | null;
     appleTouchIconPath: string;
   };
   onSignOut: () => void;
