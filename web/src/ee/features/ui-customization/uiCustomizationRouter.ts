@@ -6,32 +6,6 @@ import {
 } from "@/src/server/api/trpc";
 import { getVisibleProductModules } from "@/src/ee/features/ui-customization/productModuleSchema";
 
-function parseAllowedDomains(envValue: string | undefined): Set<string> {
-  if (!envValue?.trim()) return new Set();
-  return new Set(
-    envValue
-      .split(",")
-      .map((d) => d.trim().toLowerCase())
-      .filter(Boolean),
-  );
-}
-
-function isUrlAllowedByWhitelist(
-  url: string | undefined,
-  allowedDomains: Set<string>,
-): url is string {
-  if (!url || allowedDomains.size === 0) return Boolean(url);
-  try {
-    const host = new URL(url).hostname.toLowerCase();
-    return (
-      allowedDomains.has(host) ||
-      [...allowedDomains].some((d) => host.endsWith(`.${d}`))
-    );
-  } catch {
-    return false;
-  }
-}
-
 export const uiCustomizationRouter = createTRPCRouter({
   get: authenticatedProcedure.query(({ ctx }) => {
     const hasEntitlement = hasEntitlementBasedOnPlan({
@@ -40,34 +14,10 @@ export const uiCustomizationRouter = createTRPCRouter({
     });
     if (!hasEntitlement) return null;
 
-    const allowedDomains = parseAllowedDomains(
-      env.LANGFUSE_UI_LOGO_FAVICON_ALLOWED_DOMAINS,
-    );
-
-    const logoLightModeHref = isUrlAllowedByWhitelist(
-      env.LANGFUSE_UI_LOGO_LIGHT_MODE_HREF,
-      allowedDomains,
-    )
-      ? env.LANGFUSE_UI_LOGO_LIGHT_MODE_HREF
-      : undefined;
-    const logoDarkModeHref = isUrlAllowedByWhitelist(
-      env.LANGFUSE_UI_LOGO_DARK_MODE_HREF,
-      allowedDomains,
-    )
-      ? env.LANGFUSE_UI_LOGO_DARK_MODE_HREF
-      : undefined;
-    const faviconHref = isUrlAllowedByWhitelist(
-      env.LANGFUSE_UI_FAVICON_HREF,
-      allowedDomains,
-    )
-      ? env.LANGFUSE_UI_FAVICON_HREF
-      : undefined;
-    const favicon256Href = isUrlAllowedByWhitelist(
-      env.LANGFUSE_UI_FAVICON_256_HREF,
-      allowedDomains,
-    )
-      ? env.LANGFUSE_UI_FAVICON_256_HREF
-      : undefined;
+    const logoLightModeHref = env.LANGFUSE_UI_LOGO_LIGHT_MODE_HREF;
+    const logoDarkModeHref = env.LANGFUSE_UI_LOGO_DARK_MODE_HREF;
+    const faviconHref = env.LANGFUSE_UI_FAVICON_HREF;
+    const favicon256Href = env.LANGFUSE_UI_FAVICON_256_HREF;
 
     return {
       hostname: env.LANGFUSE_UI_API_HOST,
