@@ -16,8 +16,7 @@ export const uiCustomizationRouter = createTRPCRouter({
 
     const logoLightModeHref = env.LANGFUSE_UI_LOGO_LIGHT_MODE_HREF;
     const logoDarkModeHref = env.LANGFUSE_UI_LOGO_DARK_MODE_HREF;
-    const faviconHref = env.LANGFUSE_UI_FAVICON_HREF;
-    const favicon256Href = env.LANGFUSE_UI_FAVICON_256_HREF;
+    const faviconUrl = env.LANGFUSE_UI_FAVICON_HREF;
 
     return {
       hostname: env.LANGFUSE_UI_API_HOST,
@@ -37,8 +36,7 @@ export const uiCustomizationRouter = createTRPCRouter({
       disableBookCallButton:
         env.LANGFUSE_UI_DISABLE_BOOK_CALL_BUTTON === "true",
       disableSupportButton: env.LANGFUSE_UI_DISABLE_SUPPORT_BUTTON === "true",
-      faviconHref,
-      favicon256Href,
+      faviconUrl,
       companyName: env.LANGFUSE_UI_COMPANY_NAME?.trim() || undefined,
     };
   }),

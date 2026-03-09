@@ -67,6 +67,8 @@ type AuthenticatedLayoutProps = PropsWithChildren<{
     title: string;
     faviconPath: string;
     favicon256Path: string;
+    faviconUrl: string | null;
+    faviconMimeType: "image/svg+xml" | "image/png" | null;
     appleTouchIconPath: string;
   };
   onSignOut: () => void;
@@ -114,13 +116,26 @@ export function AuthenticatedLayout({
     <>
       <Head>
         <title>{metadata.title}</title>
-        <link rel="icon" type="image/svg+xml" href={metadata.faviconPath} />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="256x256"
-          href={metadata.favicon256Path}
-        />
+        {metadata.faviconMimeType ? (
+          <link
+            rel="icon"
+            type={metadata.faviconMimeType}
+            href={metadata.faviconUrl ?? metadata.faviconPath}
+            sizes={
+              metadata.faviconMimeType === "image/png" ? "256x256" : undefined
+            }
+          />
+        ) : (
+          <>
+            <link rel="icon" type="image/svg+xml" href={metadata.faviconPath} />
+            <link
+              rel="icon"
+              type="image/png"
+              sizes="256x256"
+              href={metadata.favicon256Path}
+            />
+          </>
+        )}
         <link rel="apple-touch-icon" href={metadata.appleTouchIconPath} />
       </Head>
 

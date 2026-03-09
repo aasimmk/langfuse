@@ -34,25 +34,34 @@ export function useLayoutMetadata(
     // Determine page title from active route
     const title = activePathName ? `${activePathName} | ${appName}` : appName;
 
-    // Use custom favicon from EE UI customization when available
-    const faviconPath =
-      uiCustomization?.faviconHref ??
-      (region === "DEV" ? `${basePath}/icon-dev.svg` : `${basePath}/icon.svg`);
+    // Use custom favicon from EE UI customization when available (supports SVG and PNG)
+    const faviconUrl = uiCustomization?.faviconUrl;
+    const defaultFaviconPath =
+      region === "DEV" ? `${basePath}/icon-dev.svg` : `${basePath}/icon.svg`;
+    const defaultFavicon256Path = `${basePath}/icon256.png`;
 
-    const favicon256Path =
-      uiCustomization?.favicon256Href ?? `${basePath}/icon256.png`;
+    const faviconPath = faviconUrl ?? defaultFaviconPath;
+    const favicon256Path = faviconUrl ?? defaultFavicon256Path;
+
+    // Detect MIME type from URL for custom favicon (supports SVG and PNG)
+    const faviconMimeType = faviconUrl
+      ? faviconUrl.toLowerCase().split("?")[0].endsWith(".svg")
+        ? ("image/svg+xml" as const)
+        : ("image/png" as const)
+      : null;
 
     return {
       title,
       faviconPath,
       favicon256Path,
+      faviconUrl: faviconUrl ?? null,
+      faviconMimeType,
       appleTouchIconPath: `${basePath}/apple-touch-icon.png`,
     };
   }, [
     activePathName,
     region,
     uiCustomization?.companyName,
-    uiCustomization?.faviconHref,
-    uiCustomization?.favicon256Href,
+    uiCustomization?.faviconUrl,
   ]);
 }
